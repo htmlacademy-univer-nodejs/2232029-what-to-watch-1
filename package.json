@@ -14,17 +14,18 @@
     "lint": "eslint src/ --ext .ts",
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
-    "ts": "ts-node"
+    "ts": "ts-node",
+    "cli": "ts-node src/cli.ts"
   },
   "devDependencies": {
-    "@types/node": "^16.11.26",
-    "@typescript-eslint/eslint-plugin": "^5.18.0",
-    "@typescript-eslint/parser": "^5.18.0",
-    "eslint": "^8.12.0",
-    "eslint-config-htmlacademy": "^5.1.2",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
+    "@types/node": "16.7.0",
+    "@typescript-eslint/eslint-plugin": "5.18.0",
+    "@typescript-eslint/parser": "5.18.0",
+    "eslint": "8.12.0",
+    "eslint-config-htmlacademy": "5.1.2",
+    "rimraf": "3.0.2",
+    "ts-node": "10.7.0",
+    "typescript": "4.6.3"
   },
   "type": "module",
   "engines": {
