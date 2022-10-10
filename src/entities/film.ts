@@ -8,8 +8,8 @@ export type Film = {
   genre: Genre;
   releaseYear: number;
   rating: number;
-  moviePreviewLink: string;
-  movieLink: string;
+  previewLink: string;
+  link: string;
   actors: string[];
   producer: string;
   durationInMinutes: number;

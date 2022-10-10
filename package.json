@@ -15,7 +15,8 @@
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
     "ts": "ts-node",
-    "cli": "ts-node src/cli.ts"
+    "cli": "ts-node src/cli.ts",
+    "mock:server": "json-server ./mocks/mock-server-data.json --port 3123"
   },
   "devDependencies": {
     "@types/node": "16.7.0",
@@ -31,5 +32,10 @@
   "engines": {
     "node": "^16.13.0",
     "npm": "^8.1.0"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.5",
+    "got": "^12.5.1",
+    "json-server": "^0.17.0"
   }
 }
