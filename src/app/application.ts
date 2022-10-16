@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import {inject, injectable} from 'inversify';
 import {ILogger} from '../common/logger/logger-interface.js';
 import {IConfig} from '../common/config/config-interface.js';
-import {Component} from '../models/component.js'
+import {Component} from '../models/component.js';
 
 @injectable()
 export default class Application {
