@@ -1,4 +1,4 @@
-import { Film } from '../entities/film.js'
+import { Film } from '../entities/film.js';
 import { getGenre } from '../models/genre.js';
 
 export const createFilm = (row: string) => {
@@ -32,6 +32,3 @@ export const createFilm = (row: string) => {
 
   return film;
 };
-
-export const getErrorMessage = (error: Error | string): string =>
-  error instanceof Error ? error.message : '';
