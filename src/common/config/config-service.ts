@@ -10,7 +10,7 @@ export default class ConfigService implements IConfig {
   private readonly config: ConfigSchema;
   private logger: ILogger;
 
-  constructor(@inject(Component.LoggerInterface) logger: ILogger) {
+  constructor(@inject(Component.ILogger) logger: ILogger) {
     this.logger = logger;
 
     const parsedOutput = config();

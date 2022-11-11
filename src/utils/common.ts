@@ -1,13 +1,14 @@
 import { Film } from '../entities/film.js';
-import { getGenre } from '../models/genre.js';
+import {getGenre} from '../models/genre.js';
+import * as crypto from 'crypto';
 
 export const createFilm = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
   const [
     title, description, published, genre,
     released, rating, previewLink, link,
-    actors, producer, durationInMinutes, commentsCount,
-    name, email, avatar, password, posterLink,
+    actors, producer, durationInMinutes,
+    name, email, avatar, posterLink,
     backgroundImageLink, backgroundColor
   ] = tokens;
 
@@ -23,8 +24,7 @@ export const createFilm = (row: string) => {
     actors: actors.split(','),
     producer,
     durationInMinutes: Number.parseInt(durationInMinutes, 10),
-    commentsCount: Number.parseInt(commentsCount, 10),
-    user: { name, email, avatar, password },
+    user: { name, email, avatar },
     posterLink,
     backgroundImageLink,
     backgroundColor,
@@ -32,3 +32,18 @@ export const createFilm = (row: string) => {
 
   return film;
 };
+
+export const createSHA256 = (line: string, salt: string): string => {
+  const shaHasher = crypto.createHmac('sha256', salt);
+  return shaHasher.update(line).digest('hex');
+};
+
+export const checkPassword = (password: string): void =>
+{
+  if (password.length < 6 || password.length > 12) {
+    throw new Error('Password must be from 6 to 12 characters.');
+  }
+};
+
+export const getErrorMessage = (error: unknown): string =>
+  error instanceof Error ? error.message : '';

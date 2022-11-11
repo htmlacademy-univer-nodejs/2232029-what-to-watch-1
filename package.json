@@ -20,6 +20,7 @@
     "mock:server": "json-server ./mocks/mock-server-data.json --port 3123"
   },
   "devDependencies": {
+    "@typegoose/typegoose": "^9.12.1",
     "@types/convict": "6.1.1",
     "@types/convict-format-with-validator": "6.0.2",
     "@types/node": "16.7.0",
@@ -34,18 +35,18 @@
   },
   "type": "module",
   "engines": {
-    "node": "^16.13.0",
-    "npm": "^8.1.0"
+    "node": "16.13.0",
+    "npm": "8.1.0"
   },
   "dependencies": {
-    "convict": "^6.2.3",
-    "convict-format-with-validator": "^6.2.0",
-    "dayjs": "^1.11.5",
-    "got": "^12.5.1",
-    "inversify": "^6.0.1",
+    "convict": "6.2.3",
+    "convict-format-with-validator": "6.2.0",
+    "dayjs": "1.11.5",
+    "got": "12.5.1",
+    "inversify": "6.0.1",
     "json-server": "^0.17.0",
-    "pino": "^8.6.1",
-    "pino-pretty": "^9.1.1",
-    "reflect-metadata": "^0.1.13"
+    "pino": "8.6.1",
+    "pino-pretty": "9.1.1",
+    "reflect-metadata": "0.1.13"
   }
 }

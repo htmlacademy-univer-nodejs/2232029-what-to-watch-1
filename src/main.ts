@@ -6,11 +6,25 @@ import {Component} from './models/component.js';
 import {IConfig} from './common/config/config-interface.js';
 import ConfigService from './common/config/config-service.js';
 import Application from './app/application.js';
+import {IDatabase} from './common/database-client/databse-interface.js';
+import DatabaseClient from './common/database-client/database-client.js';
+import {IUserService} from './entities/user/user-service-interface.js';
+import UserService from './entities/user/user-service.js';
+import {UserEntity, UserModel} from './entities/user/db-user.js';
+import {IFilmService} from './entities/film/film-service-interface.js';
+import {FilmEntity, FilmModel} from './entities/film/db-film.js';
+import FilmService from './entities/film/film-service.js';
+import { types } from '@typegoose/typegoose';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
-applicationContainer.bind<ILogger>(Component.LoggerInterface).to(LoggerService).inSingletonScope();
-applicationContainer.bind<IConfig>(Component.ConfigInterface).to(ConfigService).inSingletonScope();
+applicationContainer.bind<ILogger>(Component.ILogger).to(LoggerService).inSingletonScope();
+applicationContainer.bind<IConfig>(Component.IConfig).to(ConfigService).inSingletonScope();
+applicationContainer.bind<IDatabase>(Component.IDatabase).to(DatabaseClient).inSingletonScope();
+applicationContainer.bind<IUserService>(Component.IUserService).to(UserService);
+applicationContainer.bind<types.ModelType<UserEntity>>(Component.UserModel).toConstantValue(UserModel);
+applicationContainer.bind<IFilmService>(Component.IFilmService).to(FilmService);
+applicationContainer.bind<types.ModelType<FilmEntity>>(Component.FilmModel).toConstantValue(FilmModel);
 
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();
