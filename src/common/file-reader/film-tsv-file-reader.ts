@@ -25,7 +25,9 @@ export class FilmTsvFileReader extends EventEmitter implements IFileReader {
         lineRead = lineRead.slice(++endLinePosition);
         importedRowCount++;
 
-        this.emit('line', completeRow);
+        await new Promise((resolve) => {
+          this.emit('line', completeRow, resolve);
+        });
       }
     }
 

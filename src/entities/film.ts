@@ -1,4 +1,4 @@
-import {User} from './user.js';
+import {User} from './user/user.js';
 import {Genre} from '../models/genre.js';
 
 export type Film = {
@@ -13,7 +13,6 @@ export type Film = {
   actors: string[];
   producer: string;
   durationInMinutes: number;
-  commentsCount: number;
   user: User;
   posterLink: string;
   backgroundImageLink: string;

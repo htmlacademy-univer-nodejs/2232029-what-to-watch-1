@@ -1,6 +1,5 @@
 import {ICliCommand} from '../cli-command/cli-command.interface';
 
-
 type ParsedCommands = Record<string, string[]>;
 
 export default class CLIApplication {
