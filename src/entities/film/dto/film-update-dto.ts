@@ -1,6 +1,6 @@
 import {Genre} from '../../../models/genre.js';
 
-export default class CreateFilmDto {
+export default class UpdateFilmDto {
   public title!: string;
   public description!: string;
   public publicationDate!: Date;
