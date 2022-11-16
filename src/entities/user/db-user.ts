@@ -21,10 +21,14 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   }
 
 
-  @prop({ required: true, minlength: [1, 'Min length for username is 1'], maxlength: [15, 'Max length for username is 15'] })
+  @prop({
+    required: true,
+    minlength: [1, 'Min length for username is 1'],
+    maxlength: [15, 'Max length for username is 15']
+  })
   public name!: string;
 
-  @prop({ unique: true, required: true, match: [/^([\w-\\.]+@([\w-]+\.)+[\w-]{2,4})?$/] })
+  @prop({ unique: true, required: true })
   public email!: string;
 
   @prop({ required: false })

@@ -11,7 +11,7 @@ import UserService from '../entities/user/user-service.js';
 import {UserModel} from '../entities/user/db-user.js';
 import DatabaseClient from '../common/database-client/database-client.js';
 import LoggerService from '../common/logger/logger.js';
-import {Film} from '../entities/film.js';
+import {Film} from '../entities/film/film.js';
 import {getURI} from '../utils/db-helper.js';
 
 
@@ -22,7 +22,7 @@ export default class ImportCommand implements ICliCommand {
   private userService!: IUserService;
   private filmService!: IFilmService;
   private databaseClient!: IDatabase;
-  private logger: ILogger;
+  private readonly logger: ILogger;
   private salt!: string;
 
   constructor() {

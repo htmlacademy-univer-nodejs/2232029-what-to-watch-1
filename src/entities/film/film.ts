@@ -1,5 +1,5 @@
-import {User} from './user/user.js';
-import {Genre} from '../models/genre.js';
+import {User} from '../user/user.js';
+import {Genre} from '../../models/genre.js';
 
 export type Film = {
   title: string;

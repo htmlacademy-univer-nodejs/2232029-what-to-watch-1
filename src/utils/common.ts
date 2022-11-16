@@ -1,4 +1,4 @@
-import { Film } from '../entities/film.js';
+import { Film } from '../entities/film/film.js';
 import {getGenre} from '../models/genre.js';
 import * as crypto from 'crypto';
 
