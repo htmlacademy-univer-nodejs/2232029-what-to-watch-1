@@ -4,7 +4,7 @@ import {DocumentType} from '@typegoose/typegoose/lib/types.js';
 import {ICommentService} from './comments-service-interface.js';
 import {CommentEntity} from './db-comment.js';
 import CreateCommentDto from './dto/create-comment-dto.js';
-import {IFilmService} from '../film/film-service-interface.js';
+import {IFilmService} from '../film/service/film-service-interface.js';
 import {Component} from '../../models/component.js';
 
 @injectable()

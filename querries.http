@@ -1,0 +1,93 @@
+# Пользователи
+## Регистрация пользователя
+
+POST http://localhost:4200/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "torans@overlook.net",
+  "avatarPath": "torrance.png",
+  "firstname": "Jack",
+  "lastname": "Torrance",
+  "password": "shining"
+}
+
+###
+
+## Авторизация пользователя
+
+POST http://localhost:4200/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "torans@overlook.net",
+  "password": "123456"
+}
+
+###
+
+## Выход пользователя
+
+POST http://localhost:4200/users/logout HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "torans@overlook.net"
+}
+
+###
+
+# Фильмы
+
+## Создание
+
+POST http://localhost:4200/films/create HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Film",
+  "description": "Film description Film description Film description Film description Film description Film description",
+  "publicationDate": "2020",
+  "genre": "comedy",
+  "releaseYear": 2020,
+  "rating": 9.7,
+  "previewLink": "dsvnjkv",
+  "link": "link",
+  "actors": ["1", "2", "3"],
+  "producer": "producer",
+  "durationInMinutes": 130,
+  "userId": "6374d4c33d8026ef445dac97",
+  "posterLink": "mdkskmkv",
+  "backgroundImageLink": "dnvkkdafv",
+  "backgroundColor": "ndnjvnkja"
+}
+
+###
+
+## Редактирование
+
+POST http://localhost:4200/films/update HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": "1",
+  "title": "Film updated",
+  "description": "Film description Film description Film description Film description Film description Film description",
+  "publicationDate": "2020",
+  "genre": "comedy",
+  "releaseYear": 2020,
+  "rating": 9.7,
+  "previewLink": "dsvnjkv",
+  "link": "link",
+  "actors": ["1", "2", "3"],
+  "producer": "producer",
+  "durationInMinutes": 130,
+  "userId": "6374d4c33d8026ef445dac97",
+  "posterLink": "mdkskmkv",
+  "backgroundImageLink": "dnvkkdafv",
+  "backgroundColor": "ndnjvnkja"
+}
+
+###
+
+

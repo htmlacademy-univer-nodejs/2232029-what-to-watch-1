@@ -61,7 +61,7 @@ export class FilmEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public posterLink!: string;
 
-  @prop({ required: true, match: /([^\s]+(\.jpg)$)/ })
+  @prop({ required: true })
   public backgroundImageLink!: string;
 
   @prop({ required: true })
