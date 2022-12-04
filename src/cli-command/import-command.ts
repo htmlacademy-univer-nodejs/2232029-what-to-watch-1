@@ -1,13 +1,13 @@
 import {ICliCommand} from './cli-command.interface.js';
 import {FilmTsvFileReader} from '../common/file-reader/film-tsv-file-reader.js';
 import {createFilm, getErrorMessage} from '../utils/common.js';
-import {IUserService} from '../entities/user/user-service-interface.js';
+import {IUserService} from '../entities/user/service/user-service-interface.js';
 import {IDatabase} from '../common/database-client/databse-interface.js';
-import {IFilmService} from '../entities/film/film-service-interface.js';
+import {IFilmService} from '../entities/film/service/film-service-interface.js';
 import {ILogger} from '../common/logger/logger-interface.js';
-import FilmService from '../entities/film/film-service.js';
+import FilmService from '../entities/film/service/film-service.js';
 import {FilmModel} from '../entities/film/db-film.js';
-import UserService from '../entities/user/user-service.js';
+import UserService from '../entities/user/service/user-service.js';
 import {UserModel} from '../entities/user/db-user.js';
 import DatabaseClient from '../common/database-client/database-client.js';
 import LoggerService from '../common/logger/logger.js';

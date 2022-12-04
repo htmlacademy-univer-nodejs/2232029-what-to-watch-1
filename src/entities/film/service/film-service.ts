@@ -1,12 +1,11 @@
 import { inject, injectable } from 'inversify';
 import { DocumentType, types } from '@typegoose/typegoose';
-import {Component} from '../../models/component.js';
+import {Component} from '../../../models/component.js';
 import {IFilmService} from './film-service-interface.js';
-import {FilmEntity} from './db-film.js';
-import {ILogger} from '../../common/logger/logger-interface.js';
-import UpdateFilmDto from './dto/film-update-dto.js';
-
-const MAX_FILMS_COUNT = 60;
+import {FilmEntity} from '../db-film.js';
+import {ILogger} from '../../../common/logger/logger-interface.js';
+import UpdateFilmDto from '../dto/film-update-dto.js';
+import CreateFilmDto from '../dto/film-create-dto';
 
 @injectable()
 export default class FilmService implements IFilmService {
@@ -15,7 +14,7 @@ export default class FilmService implements IFilmService {
     @inject(Component.FilmModel) private readonly filmModel: types.ModelType<FilmEntity>
   ) { }
 
-  async create(dto: UpdateFilmDto): Promise<DocumentType<FilmEntity>> {
+  async create(dto: CreateFilmDto): Promise<DocumentType<FilmEntity>> {
     const film = await this.filmModel.create(dto);
     this.logger.info(`New film created: ${dto.title}`);
 
@@ -24,6 +23,11 @@ export default class FilmService implements IFilmService {
 
   async findById(filmId: string): Promise<DocumentType<FilmEntity> | null> {
     return this.filmModel.findById(filmId).exec();
+  }
+
+
+  async findByName(filmTitle: string): Promise<DocumentType<FilmEntity> | null> {
+    return this.filmModel.findOne({title: filmTitle}).populate('userId');
   }
 
   async find(): Promise<DocumentType<FilmEntity>[]> {
@@ -51,8 +55,8 @@ export default class FilmService implements IFilmService {
     ]);
   }
 
-  async updateById(filmId: string, dto: UpdateFilmDto): Promise<DocumentType<FilmEntity> | null> {
-    return this.filmModel.findByIdAndUpdate(filmId, dto).populate('userId');
+  async update(dto: UpdateFilmDto): Promise<DocumentType<FilmEntity> | null> {
+    return this.filmModel.findByIdAndUpdate(dto.id, dto).populate('userId');
   }
 
   async deleteById(filmId: string): Promise<void | null> {

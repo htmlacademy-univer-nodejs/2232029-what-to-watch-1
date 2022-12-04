@@ -7,5 +7,8 @@ export const Component = {
   IUserService: Symbol.for('IUserService'),
   IFilmService: Symbol.for('IFilmService'),
   FilmModel: Symbol.for('FilmModel'),
-  CommentModel: Symbol.for('CommentModel')
+  CommentModel: Symbol.for('CommentModel'),
+  FilmController: Symbol.for('FilmController'),
+  IExceptionFilter: Symbol.for('IExceptionFilter'),
+  UserController: Symbol.for('UserController')
 } as const;

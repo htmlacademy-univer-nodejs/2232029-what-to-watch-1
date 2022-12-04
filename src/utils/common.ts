@@ -1,6 +1,8 @@
 import { Film } from '../entities/film/film.js';
 import {getGenre} from '../models/genre.js';
 import * as crypto from 'crypto';
+import {plainToInstance} from 'class-transformer';
+import {ClassConstructor} from 'class-transformer/types/interfaces/class-constructor.type.js';
 
 export const createFilm = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
@@ -47,3 +49,10 @@ export const checkPassword = (password: string): void =>
 
 export const getErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : '';
+
+export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
+  plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+
+export const createErrorObject = (message: string) => ({
+  error: message,
+});
