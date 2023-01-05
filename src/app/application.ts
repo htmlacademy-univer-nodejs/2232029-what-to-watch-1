@@ -20,6 +20,7 @@ export default class Application {
     @inject(Component.FilmController) private filmController: IController,
     @inject(Component.IExceptionFilter) private exceptionFilter: IExceptionFilter,
     @inject(Component.UserController) private userController: IController,
+    @inject(Component.CommentController) private commentController: IController,
 ) {
     this.expressApp = express();
   }
@@ -27,10 +28,12 @@ export default class Application {
   public initRoutes() {
     this.expressApp.use('/films', this.filmController.router);
     this.expressApp.use('/users', this.userController.router);
+    this.expressApp.use('/comments', this.commentController.router);
   }
 
   public initMiddleware() {
     this.expressApp.use(express.json());
+    this.expressApp.use('/upload', express.static(this.config.get('UPLOAD_DIRECTORY')));
   }
 
   public initExceptionFilters() {

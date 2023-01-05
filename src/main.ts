@@ -20,6 +20,10 @@ import {IExceptionFilter} from './common/errors/exception-filter-interface.js';
 import FilmController from './entities/film/controller/film-controller.js';
 import ExceptionFilter from './common/errors/exception-filter.js';
 import UserController from './entities/user/controller/user-controller.js';
+import {ICommentService} from './entities/comment/comments-service-interface.js';
+import CommentService from './entities/comment/comments-service.js';
+import CommentController from './entities/comment/controller/comment-controller.js';
+import {CommentEntity, CommentModel} from './entities/comment/db-comment.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
@@ -28,11 +32,14 @@ applicationContainer.bind<IConfig>(Component.IConfig).to(ConfigService).inSingle
 applicationContainer.bind<IDatabase>(Component.IDatabase).to(DatabaseClient).inSingletonScope();
 applicationContainer.bind<IUserService>(Component.IUserService).to(UserService);
 applicationContainer.bind<types.ModelType<UserEntity>>(Component.UserModel).toConstantValue(UserModel);
-applicationContainer.bind<IFilmService>(Component.IFilmService).to(FilmService);
+applicationContainer.bind<IFilmService>(Component.IFilmService).to(FilmService).inSingletonScope();
+applicationContainer.bind<ICommentService>(Component.ICommentService).to(CommentService).inSingletonScope();
 applicationContainer.bind<types.ModelType<FilmEntity>>(Component.FilmModel).toConstantValue(FilmModel);
+applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
 applicationContainer.bind<IController>(Component.FilmController).to(FilmController).inSingletonScope();
 applicationContainer.bind<IExceptionFilter>(Component.IExceptionFilter).to(ExceptionFilter).inSingletonScope();
 applicationContainer.bind<IController>(Component.UserController).to(UserController).inSingletonScope();
+applicationContainer.bind<IController>(Component.CommentController).to(CommentController).inSingletonScope();
 
 
 const application = applicationContainer.get<Application>(Component.Application);
