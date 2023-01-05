@@ -89,5 +89,15 @@ Content-Type: application/json
 }
 
 ###
+###
 
+## Отправка аватарки пользователя
+POST http://localhost:4200/users/6374d4c33d8026ef445dac97/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="dreamstime_s_132852916-768x512.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\Пользователь\Photo-video-music\Pictures\dreamstime_s_132852916-768x512.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
