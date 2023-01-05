@@ -10,5 +10,7 @@ export const Component = {
   CommentModel: Symbol.for('CommentModel'),
   FilmController: Symbol.for('FilmController'),
   IExceptionFilter: Symbol.for('IExceptionFilter'),
-  UserController: Symbol.for('UserController')
+  UserController: Symbol.for('UserController'),
+  CommentController: Symbol.for('CommentController'),
+  ICommentService: Symbol.for('ICommentService')
 } as const;

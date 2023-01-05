@@ -5,7 +5,8 @@ import {IFilmService} from './film-service-interface.js';
 import {FilmEntity} from '../db-film.js';
 import {ILogger} from '../../../common/logger/logger-interface.js';
 import UpdateFilmDto from '../dto/film-update-dto.js';
-import CreateFilmDto from '../dto/film-create-dto';
+import CreateFilmDto from '../dto/film-create-dto.js';
+import {MAX_FILMS_COUNT} from '../films-constants.js';
 
 @injectable()
 export default class FilmService implements IFilmService {
@@ -82,5 +83,9 @@ export default class FilmService implements IFilmService {
     return this.filmModel.findByIdAndUpdate(filmId, {
       rating: (oldRating * oldCommentsCount + newRating) / (oldCommentsCount + 1)
     });
+  }
+
+  async exists(documentId: string): Promise<boolean> {
+    return (this.filmModel.exists({_id: documentId})) !== null;
   }
 }
