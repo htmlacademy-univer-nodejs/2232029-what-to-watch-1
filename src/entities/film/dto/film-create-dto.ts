@@ -38,8 +38,8 @@ export default class CreateFilmDto {
   @Min(0, {message: 'durationInMinutes can not be less than 0'})
   public durationInMinutes!: number;
 
-  @IsOptional()
-  public userId?: string;
+  @IsMongoId({message: 'userId field must be valid an id'})
+  public userId!: string;
 
   @Matches(/(\S+(\.jpg)$)/, {message: 'posterLink must be .jpg format image'})
   @IsString({message: 'posterPath is required'})
@@ -51,4 +51,7 @@ export default class CreateFilmDto {
 
   @IsString({message: 'backgroundColor is required'})
   public backgroundColor!: string;
+
+  @IsBoolean({message: 'isPromo should be boolean'})
+  public isPromo?: boolean;
 }

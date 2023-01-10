@@ -39,6 +39,14 @@ export default class UserController extends Controller {
       handler: this.login,
       middlewares: [new ValidateDtoMiddleware(LoginUserDto)]
     });
+    this.addRoute({
+      path: '/:userId/avatar',
+      method: HttpMethod.Post,
+      handler: this.uploadAvatar,
+      middlewares: [
+        new ValidateObjectIdMiddleware('userId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar')]
+    });
     this.addRoute({path: '/logout', method: HttpMethod.Post, handler: this.logout})
   }
 
@@ -96,6 +104,12 @@ export default class UserController extends Controller {
     );
   }
 
+  async uploadAvatar(req: Request, res: Response) {
+    this.created(res, {
+      filepath: req.file?.path
+    });
+  }
+  
   public async authCheck(req: Request, res: Response) {
     const user = await this.userService.findByEmail(req.user.email);
 
