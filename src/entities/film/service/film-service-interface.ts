@@ -2,7 +2,7 @@ import { DocumentType } from '@typegoose/typegoose';
 import {FilmEntity} from '../db-film.js';
 import UpdateFilmDto from '../dto/film-update-dto.js';
 import CreateFilmDto from '../dto/film-create-dto.js';
-import {IDocumentExists} from '../../../middlewares/document-exist-interface.js';
+import {IDocumentExists} from '../../../common/middlewares/document-exist-interface.js';
 
 export interface IFilmService extends IDocumentExists {
   create(dto: CreateFilmDto): Promise<DocumentType<FilmEntity>>;

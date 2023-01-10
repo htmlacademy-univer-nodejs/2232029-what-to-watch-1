@@ -8,12 +8,14 @@ import {IUserService} from '../service/user-service-interface.js';
 import {IConfig} from '../../../common/config/config-interface.js';
 import {HttpMethod} from '../../../models/http-method.js';
 import CreateUserDto from '../dto/create-user-dto.js';
-import {fillDTO} from '../../../utils/common.js';
+import {createJWT, fillDTO} from '../../../utils/common.js';
 import UserResponse from '../response/user-response.js';
 import HttpError from '../../../common/errors/http-error.js';
 import LoginUserDto from '../dto/login-user-dto.js';
 import LogoutUserDto from '../dto/logout-user-dto.js';
-import {ValidateDtoMiddleware} from '../../../middlewares/validate-dto-middleware.js';
+import {ValidateDtoMiddleware} from '../../../common/middlewares/validate-dto-middleware.js';
+import {JWT_ALGORITHM} from '../user-constants.js';
+import LoggedUserResponse from '../response/user-logger-response.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -66,16 +68,27 @@ export default class UserController extends Controller {
     {body}: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
     _res: Response,
   ): Promise<void> {
-    const existsUser = await this.userService.findByEmail(body.email);
-
-    if (!existsUser) {
+    const user = await this.userService.verifyUser(body, this.configService.get('SALT'));
+    if (!user) {
       throw new HttpError(
-        StatusCodes.UNAUTHORIZED,
-        `User with email ${body.email} not found.`,
-        'UserController',
+      StatusCodes.UNAUTHORIZED,
+        'Unauthorized',
+        'UserController'
       );
     }
+    console.log(user)
+    const token = await createJWT(
+      JWT_ALGORITHM,
+      this.configService.get('JWT_SECRET'),
+      { ...user }
+    );
+    this.ok(_res, fillDTO(LoggedUserResponse, {email: user?.email, token}));
+  }
 
+  public async logout(
+    {body}: Request<Record<string, unknown>, Record<string, unknown>, LogoutUserDto>,
+    _res: Response ): Promise<void> {
+    console.log(body)
     throw new HttpError(
       StatusCodes.NOT_IMPLEMENTED,
       'Not implemented',
@@ -83,15 +96,9 @@ export default class UserController extends Controller {
     );
   }
 
-  public async logout(
-    {body}: Request<Record<string, unknown>, Record<string, unknown>, LogoutUserDto>,
-    _res: Response,
-  ): Promise<void> {
-    console.log(body)
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController',
-    );
+  public async authCheck(req: Request, res: Response) {
+    const user = await this.userService.findByEmail(req.user.email);
+
+    this.ok(res, fillDTO(LoggedUserResponse, user));
   }
 }

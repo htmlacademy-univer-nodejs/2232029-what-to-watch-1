@@ -14,10 +14,11 @@ import CreateFilmDto from '../dto/film-create-dto.js';
 import {MAX_FILMS_COUNT} from '../films-constants.js';
 import SearchFilmsResponse from '../response/SearchFilmsResponse.js';
 import {ICommentService} from '../../comment/comments-service-interface.js';
-import {ValidateDtoMiddleware} from '../../../middlewares/validate-dto-middleware.js';
-import {DocumentExistsMiddleware} from '../../../middlewares/document-exist-middleware.js';
-import {ValidateObjectIdMiddleware} from '../../../middlewares/validate-object-id-middleware.js';
+import {ValidateDtoMiddleware} from '../../../common/middlewares/validate-dto-middleware.js';
+import {DocumentExistsMiddleware} from '../../../common/middlewares/document-exist-middleware.js';
+import {ValidateObjectIdMiddleware} from '../../../common/middlewares/validate-object-id-middleware.js';
 import CommentResponse from '../../comment/response/comment-response.js';
+import {PrivateRouteMiddleware} from '../../../common/middlewares/private-route-moddleware.js';
 
 @injectable()
 export default class FilmController extends Controller {
@@ -28,7 +29,7 @@ export default class FilmController extends Controller {
   ) {
     super(logger);
 
-    this.logger.info('Register routes for CategoryController…');
+    this.logger.info('Register routes for Films Controller');
 
     this.addRoute({
       path: '/',
@@ -39,7 +40,9 @@ export default class FilmController extends Controller {
       path: '/create',
       method: HttpMethod.Post,
       handler: this.createFilm,
-      middlewares: [new ValidateDtoMiddleware(CreateFilmDto)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateFilmDto)]
     });
     this.addRoute({
       path: '/:id',
@@ -55,6 +58,7 @@ export default class FilmController extends Controller {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('id'),
         new ValidateDtoMiddleware(UpdateFilmDto),
         new DocumentExistsMiddleware(this.filmsService, 'Film', 'id')
@@ -65,6 +69,7 @@ export default class FilmController extends Controller {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('id'),
         new DocumentExistsMiddleware(this.filmsService, 'Film', 'id')
       ]
@@ -96,9 +101,9 @@ export default class FilmController extends Controller {
     this.ok(res, filmsResponse);
   }
 
-  public async createFilm(
-    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateFilmDto>,
+  public async createFilm(req: Request<Record<string, unknown>, Record<string, unknown>, CreateFilmDto>,
     res: Response): Promise<void> {
+    const {body} = req;
 
     const existFilm = await this.filmsService.findByName(body.title);
 
@@ -115,9 +120,9 @@ export default class FilmController extends Controller {
   }
 
   public async update(
-    {body}: Request<Record<string, unknown>, Record<string, unknown>, UpdateFilmDto>,
+    req: Request<Record<string, unknown>, UpdateFilmDto>,
     res: Response): Promise<void> {
-
+    const {body, user} = req;
     const existFilm = await this.filmsService.findById(body.id);
 
     if (!existFilm) {
@@ -128,7 +133,8 @@ export default class FilmController extends Controller {
       );
     }
 
-    const result = await this.filmsService.update(body);
+    console.log({...body, userId: user.id})
+    const result = await this.filmsService.update({...body, userId: user.id});
     this.ok(res, fillDTO(FilmResponse, result))
   }
 
@@ -150,12 +156,12 @@ export default class FilmController extends Controller {
   }
 
   public async delete(
-    {params}: Request<Record<string, string>>,
+    req: Request<Record<string, string>>,
     res: Response): Promise<void> {
-
+    const {params, user} = req;
     const existFilm = await this.filmsService.findById(params.id);
 
-    if (!existFilm) {
+    if (existFilm?.userId?.id !== user.id) {
       throw new HttpError(
         StatusCodes.UNPROCESSABLE_ENTITY,
         `Film with id «${params.id}» not exists.`,

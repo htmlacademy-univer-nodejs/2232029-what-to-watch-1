@@ -1,6 +1,6 @@
-import CreateCommentDto from '../../comment/dto/create-comment-dto.js';
+import CreateFilmDto from './film-create-dto.js';
 
 
-export default class UpdateFilmDto extends CreateCommentDto{
+export default class UpdateFilmDto extends CreateFilmDto{
   public id!: string;
 }

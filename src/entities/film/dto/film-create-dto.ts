@@ -1,5 +1,5 @@
 import {Genre} from '../../../models/genre.js';
-import {IsArray, IsDateString, IsEnum, IsInt, IsMongoId, IsString, Length, Matches, Max, Min} from 'class-validator';
+import {IsArray, IsDateString, IsEnum, IsInt, IsOptional, IsString, Length, Matches, Max, Min} from 'class-validator';
 
 export default class CreateFilmDto {
 
@@ -38,8 +38,8 @@ export default class CreateFilmDto {
   @Min(0, {message: 'durationInMinutes can not be less than 0'})
   public durationInMinutes!: number;
 
-  @IsMongoId({message: 'userId field must be valid an id'})
-  public userId!: string;
+  @IsOptional()
+  public userId?: string;
 
   @Matches(/(\S+(\.jpg)$)/, {message: 'posterLink must be .jpg format image'})
   @IsString({message: 'posterPath is required'})

@@ -53,8 +53,7 @@ export class FilmEntity extends defaultClasses.TimeStamps {
   public durationInMinutes!: number;
 
   @prop({
-    ref: UserEntity,
-    required: true
+    ref: UserEntity
   })
   public userId!: Ref<UserEntity>;
 
