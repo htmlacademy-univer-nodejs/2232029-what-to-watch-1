@@ -16,6 +16,8 @@ import LogoutUserDto from '../dto/logout-user-dto.js';
 import {ValidateDtoMiddleware} from '../../../common/middlewares/validate-dto-middleware.js';
 import {JWT_ALGORITHM} from '../user-constants.js';
 import LoggedUserResponse from '../response/user-logger-response.js';
+import {ValidateObjectIdMiddleware} from '../../../common/middlewares/validate-object-id-middleware.js';
+import {UploadFileMiddleware} from '../../../common/middlewares/upload-file-middleware.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -109,7 +111,7 @@ export default class UserController extends Controller {
       filepath: req.file?.path
     });
   }
-  
+
   public async authCheck(req: Request, res: Response) {
     const user = await this.userService.findByEmail(req.user.email);
 

@@ -1,5 +1,17 @@
 import {Genre} from '../../../models/genre.js';
-import {IsArray, IsDateString, IsEnum, IsInt, IsOptional, IsString, Length, Matches, Max, Min} from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsDateString,
+  IsEnum,
+  IsInt,
+  IsMongoId,
+  IsString,
+  Length,
+  Matches,
+  Max,
+  Min
+} from 'class-validator';
 
 export default class CreateFilmDto {
 
