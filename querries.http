@@ -5,8 +5,8 @@ POST http://localhost:4200/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "torans@overlook.net",
-  "avatarPath": "torrance.png",
+  "email": "me@overlook.net",
+  "avatar": "torrance.png",
   "firstname": "Jack",
   "lastname": "Torrance",
   "password": "shining"
@@ -20,8 +20,8 @@ POST http://localhost:4200/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "torans@overlook.net",
-  "password": "123456"
+  "email": "me@overlook.net",
+  "password": "shining"
 }
 
 ###
@@ -32,7 +32,7 @@ POST http://localhost:4200/users/logout HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "torans@overlook.net"
+  "email": "me@overlook.net"
 }
 
 ###
@@ -43,9 +43,10 @@ Content-Type: application/json
 
 POST http://localhost:4200/films/create HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyIkX18iOnsiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGFzc3dvcmQiOiJpbml0IiwiZW1haWwiOiJpbml0IiwibmFtZSI6ImluaXQiLCJfaWQiOiJpbml0IiwiYXZhdGFyIjoiaW5pdCIsImNyZWF0ZWRBdCI6ImluaXQiLCJ1cGRhdGVkQXQiOiJpbml0IiwiX192IjoiaW5pdCJ9LCJzdGF0ZXMiOnsicmVxdWlyZSI6e30sImluaXQiOnsiX2lkIjp0cnVlLCJuYW1lIjp0cnVlLCJlbWFpbCI6dHJ1ZSwiYXZhdGFyIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiY3JlYXRlZEF0Ijp0cnVlLCJ1cGRhdGVkQXQiOnRydWUsIl9fdiI6dHJ1ZX19fSwic2tpcElkIjp0cnVlfSwiJGlzTmV3IjpmYWxzZSwiX2RvYyI6eyJfaWQiOiI2M2I2YmQ5MDQ0NjQxNjExZTkyZDFkZTAiLCJuYW1lIjoiSmFjayBUb3JyYW5jZSIsImVtYWlsIjoibWVAb3Zlcmxvb2submV0IiwiYXZhdGFyIjoibDVFaElMclBxODQuanBnIiwicGFzc3dvcmQiOiI2MjU2ZTljNmM0MGVlOTA5NTM0YWY2NjI0YWZmNThkYTQ4ZjkwMDJjNWQ4YWIyOWFlOTI0ZDQ1OTkyMjVlZjc4IiwiY3JlYXRlZEF0IjoiMjAyMy0wMS0wNVQxMjowNzo0NC4xMjFaIiwidXBkYXRlZEF0IjoiMjAyMy0wMS0wNVQxMjowNzo0NC4xMjFaIiwiX192IjowfSwiaWF0IjoxNjcyOTIwNTc3LCJleHAiOjE2NzMwOTMzNzd9.eufjp3w9N1PIT0AYLtIwOulasukshjLIW7nZQvyQCnU
 
 {
-  "title": "Film",
+  "title": "Filmdsvsd",
   "description": "Film description Film description Film description Film description Film description Film description",
   "publicationDate": "2020",
   "genre": "comedy",
@@ -68,6 +69,7 @@ Content-Type: application/json
 
 POST http://localhost:4200/films/update HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyIkX18iOnsiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGFzc3dvcmQiOiJpbml0IiwiZW1haWwiOiJpbml0IiwibmFtZSI6ImluaXQiLCJfaWQiOiJpbml0IiwiYXZhdGFyIjoiaW5pdCIsImNyZWF0ZWRBdCI6ImluaXQiLCJ1cGRhdGVkQXQiOiJpbml0IiwiX192IjoiaW5pdCJ9LCJzdGF0ZXMiOnsicmVxdWlyZSI6e30sImluaXQiOnsiX2lkIjp0cnVlLCJuYW1lIjp0cnVlLCJlbWFpbCI6dHJ1ZSwiYXZhdGFyIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiY3JlYXRlZEF0Ijp0cnVlLCJ1cGRhdGVkQXQiOnRydWUsIl9fdiI6dHJ1ZX19fSwic2tpcElkIjp0cnVlfSwiJGlzTmV3IjpmYWxzZSwiX2RvYyI6eyJfaWQiOiI2M2I2YmQ5MDQ0NjQxNjExZTkyZDFkZTAiLCJuYW1lIjoiSmFjayBUb3JyYW5jZSIsImVtYWlsIjoibWVAb3Zlcmxvb2submV0IiwiYXZhdGFyIjoibDVFaElMclBxODQuanBnIiwicGFzc3dvcmQiOiI2MjU2ZTljNmM0MGVlOTA5NTM0YWY2NjI0YWZmNThkYTQ4ZjkwMDJjNWQ4YWIyOWFlOTI0ZDQ1OTkyMjVlZjc4IiwiY3JlYXRlZEF0IjoiMjAyMy0wMS0wNVQxMjowNzo0NC4xMjFaIiwidXBkYXRlZEF0IjoiMjAyMy0wMS0wNVQxMjowNzo0NC4xMjFaIiwiX192IjowfSwiaWF0IjoxNjcyOTIwNTc3LCJleHAiOjE2NzMwOTMzNzd9.eufjp3w9N1PIT0AYLtIwOulasukshjLIW7nZQvyQCnU
 
 {
   "id": "1",

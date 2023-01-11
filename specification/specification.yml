@@ -100,29 +100,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/user'
 
-
-  /users/logout:
-    delete:
-      tags:
-        - users
-      summary: Выход из закрытой части приложения
-      description: Завершение пользовательского сеанса.
-
-      parameters:
-        - in: cookie
-          name: SESSIONID
-          required: true
-          schema:
-            type: string
-
-      responses:
-        "204":
-          description: Успешно.
-
-        "403":
-          description: Неверный токен. Завершение пользовательского сеанса невозможно.
-
-
   /films/create:
     post:
       tags:
@@ -237,11 +214,6 @@ paths:
             schema:
               type: object
 
-              properties:
-                userId:
-                  type: string
-                  format: uuid
-
       responses:
         "204":
           description: Фильм успешно удален.
@@ -310,20 +282,6 @@ paths:
       summary: Получить список фильмов «К просмотру»
       description: Возвращает список фильмов, добавленных к просмотру
 
-      requestBody:
-        description: Id пользователя, запрашивающего фильмы к просмотру.
-        content:
-          application/json:
-            schema:
-              type: object
-
-              properties:
-                userId:
-                  type: string
-                  format: uuid
-
-              required:
-                - userId
 
       responses:
         "200":
@@ -353,18 +311,12 @@ paths:
               type: object
 
               properties:
-                userId:
-                  type: string
-                  format: uuid
-                  example: 6329c3d6a04ab1061c6425ea
-
                 filmId:
                   type: string
                   format: uuid
                   example: 6329c3d6a04ab1061c6425ease8u342
 
               required:
-                - userId
                 - filmId
 
       responses:
@@ -389,18 +341,12 @@ paths:
               type: object
 
               properties:
-                userId:
-                  type: string
-                  format: uuid
-                  example: 6329c3d6a04ab1061c6425ea
-
                 filmId:
                   type: string
                   format: uuid
                   example: 6329c3d6a04ab1061c6425ease8u342
 
               required:
-                - userId
                 - filmId
 
       responses:
