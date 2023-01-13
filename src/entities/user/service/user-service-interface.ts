@@ -2,7 +2,7 @@ import { DocumentType } from '@typegoose/typegoose';
 import CreateUserDto from '../dto/create-user-dto.js';
 import {UserEntity} from '../db-user.js';
 import LoginUserDto from '../dto/login-user-dto.js';
-import {FilmEntity} from '../../film/db-film.ts';
+import {FilmEntity} from '../../film/db-film.js';
 
 export interface IUserService {
   create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>>;

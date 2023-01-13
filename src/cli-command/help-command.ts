@@ -1,4 +1,3 @@
-
 import chalk from 'chalk';
 import {ICliCommand} from './cli-command.interface.js';
 
