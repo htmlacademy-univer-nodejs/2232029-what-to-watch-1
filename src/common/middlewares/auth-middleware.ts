@@ -19,12 +19,11 @@ export class AuthenticateMiddleware implements IMiddleware {
     try {
       const {payload} = await jose.jwtVerify(token, createSecretKey(this.jwtSecret, 'utf-8'));
       req.user = { email: `${payload.email}`, id: `${payload.id}` };
-
       return next();
     } catch {
 
       return next(new HttpError(
-        StatusCodes.UNAUTHORIZED,
+        StatusCodes.FORBIDDEN,
         'Invalid token',
         'AuthenticateMiddleware')
       );

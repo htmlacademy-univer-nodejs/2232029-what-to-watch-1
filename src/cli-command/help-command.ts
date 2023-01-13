@@ -15,7 +15,7 @@ export default class HelpCommand implements ICliCommand {
                 --version:                      # Выводит номер версии
                 --help:                         # Печатает этот текст
                 --import <path>:                # Импортирует данные из TSV
-                --generrtor <n> <path> <url>    # Генерирует произвольное количество тестовых данных
+                --generate <n> <path> <url>    # Генерирует произвольное количество тестовых данных
         `);
 
   }

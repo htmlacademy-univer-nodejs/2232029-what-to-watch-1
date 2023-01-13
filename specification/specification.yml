@@ -23,9 +23,12 @@ paths:
       requestBody:
         description: Информация для создания нового пользователя.
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/createUser'
+            encoding:
+              avatar:
+                contentType: image/png, image/jpeg
         required: true
 
       responses:
@@ -38,6 +41,9 @@ paths:
 
         "409":
           description: Пользователь с таким email уже существует.
+
+        "400":
+          description: Не удалось обработать запрос, так как он представлен в неправильном формате или является некорректным.
 
 
   /users/login:
@@ -68,12 +74,17 @@ paths:
         "200":
           description: >
             Успешно авторизован.
-            Токен будет возвращен в куки с названием `SESSIONID`. Клиент использует этот токен для отправки любых запросов. Токен передаётся в заголовках.
-          headers:
-            Set-Cookie:
+            Объект с токеном.
+            Клиент использует этот токен для отправки любых запросов. Токен передаётся в заголовках.
+          content:
+            application/json:
               schema:
-                type: string
-                example: SESSIONID=abcde12345; Path=/; HttpOnly
+                type: object
+
+                properties:
+                  token:
+                    type: string
+                    format: jwt
 
         "403":
           description: Неправильный логин или пароль.
@@ -87,10 +98,11 @@ paths:
 
       parameters:
         - in: cookie
-          name: SESSIONID
+          name: Authorization
           required: true
           schema:
             type: string
+            format: Bearer jwt
 
       responses:
         "200":
@@ -99,6 +111,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
+
+        "401":
+          description: Невалидный токен. Пользователь не авторизован.
 
   /films/create:
     post:
@@ -126,6 +141,8 @@ paths:
         "400":
           description: Не удалось обработать запрос, так как он представлен в неправильном формате или является некорректным.
 
+        "401":
+          description: Пользователь не авторизован. Добавлять новые фильмы могут только авторизованные клиенты.
 
   /films/{filmId}:
     get:
@@ -161,13 +178,12 @@ paths:
       description: Редактирует карточку фильма, созданную пользователем.
 
       parameters:
-        - in: path
-          name: filmId
-          schema:
-            type: string
-            format: uuid
-          required: true
-          description: Film id to update.
+        - in: header
+            name: Authorization
+            required: true
+            schema:
+              type: string
+              format: Bearer jwt
 
       requestBody:
         description: Полный набор информации и идентификатор редактируемого фильма.
@@ -188,6 +204,12 @@ paths:
         "400":
           description: Не удалось обработать запрос, так как он представлен в неправильном формате или является некорректным.
 
+        "401":
+          description: Пользователь не авторизован. Редактировать карточки фильмов могут только авторизованные клиенты.
+
+        "403":
+          description: Пользователь, пытающийся редактировать карточку фильма, не является её владельцем, поэтому ему запрещено её редактировать.
+
         "404":
           description: Фильма с данным id не существует.
 
@@ -206,6 +228,12 @@ paths:
             format: uuid
           required: true
           description: Film id to delete.
+        - in: header
+            name: Authorization
+            required: true
+            schema:
+              type: string
+              format: Bearer jwt
 
       requestBody:
         description: Id пользователя, пытающегося удалить фильм.
@@ -218,8 +246,11 @@ paths:
         "204":
           description: Фильм успешно удален.
 
+        "401":
+          description: Пользователь не авторизован. Удалять карточки фильмов могут только авторизованные клиенты.
+
         "403":
-          description: Запрещено удаление фильма данным пользователем.
+          description: Пользователь, пытающийся удалить карточку фильма, не является её владельцем, поэтому ему запрещено её удалять.
 
         "404":
           description: Фильма с данным id не существует.
@@ -236,6 +267,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 60
             example: 10
 
         - in: query
@@ -275,7 +307,7 @@ paths:
                 $ref: '#/components/schemas/film'
 
 
-  /films/to_watch:
+  /films/watch:
     get:
       tags:
         - films
@@ -304,7 +336,7 @@ paths:
       description: Добавляет фильм в список "К просмотру"
 
       requestBody:
-        description: Id пользователя, добавляющего фильм к просмотру, и id фильма, который добавляют в список.
+        description: Id фильма, который добавляют в список.
         content:
           application/json:
             schema:
@@ -334,7 +366,7 @@ paths:
       description: Удаляет фильм из списка "К просмотру"
 
       requestBody:
-        description: Id пользователя, удаляющего фильм из списка "К просмотру", и id этого фильма.
+        description: Id этого фильма.
         content:
           application/json:
             schema:
@@ -436,15 +468,29 @@ components:
       properties:
         email:
           type: string
+          format: email
           example: yana@mail.ru
 
         name:
           type: string
+          minLength: 1
+          maxLength: 15
           example: Yana
 
         password:
           type: string
+          minLength: 6
+          maxLength: 12
           example: 123456
+
+        avatar:
+          type: string
+          format: binary
+
+          required:
+            - email
+            - password
+            - name
 
     user:
       type: object
@@ -459,7 +505,13 @@ components:
           type: string
           example: yana@mail.ru
 
-    createFilm:
+        avatar:
+          type: string
+          format: uri
+          pattern: ([^\s]+(\.(jpg|png))$)
+          example: /upload/avatar.png
+
+    CreateFilmDto:
       type: object
 
       properties:
@@ -475,7 +527,7 @@ components:
           maxLength: 1024
           example: Деспотичное государство ежегодно устраивает показательные игры на выживание, за которыми в прямом эфире следит весь мир.
 
-        publishingDate:
+        publicationDate:
           type: string
           format: date-time
           example: 2022-10-21T22:55:33.903Z
@@ -491,12 +543,12 @@ components:
           maximum: 2022
           example: 2013
 
-        previewPath:
+        previewLink:
           type: string
           format: url
           example: https://www.what-to-watch.ru/hunger_games_preview
 
-        filmPath:
+        link:
           type: string
           format: url
           example: https://www.what-to-watch.ru/hunger_games
@@ -509,7 +561,7 @@ components:
           uniqueItems: true
           example: [ Дженнифер Лоуренс, Джош Хатчерсон, Лиам Хемсворт ]
 
-        director:
+        producer:
           type: string
           minLength: 2
           maxLength: 50
@@ -519,18 +571,13 @@ components:
           type: number
           minimum: 0.1
 
-        userId:
-          type: string
-          format: uuid
-          example: 6329c3d6a04ab1061c6425ea
-
-        posterPath:
+        posterLink:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
           example: hunger_games_poster.jpg
 
-        backgroundImagePath:
+        backgroundImageLink:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
@@ -543,17 +590,16 @@ components:
       required:
         - title
         - description
-        - publishingDate
+        - publicationDate
         - genre
         - releaseYear
-        - previewPath
-        - filmPath
+        - previewLink
+        - link
         - actors
         - director
         - durationInMinutes
-        - userId
-        - posterPath
-        - backgroundImagePath
+        - posterLink
+        - backgroundImageLink
         - backgroundColor
 
     film:
@@ -572,7 +618,7 @@ components:
           maxLength: 1024
           example: Деспотичное государство ежегодно устраивает показательные игры на выживание, за которыми в прямом эфире следит весь мир.
 
-        publishingDate:
+        publicationDate:
           type: string
           format: date-time
           example: 2022-10-21T22:55:33.903Z
@@ -594,12 +640,12 @@ components:
           maximum: 10
           example: 5
 
-        previewPath:
+        previewLink:
           type: string
           format: url
           example: https://www.what-to-watch.ru/hunger_games_preview
 
-        filmPath:
+        link:
           type: string
           format: url
           example: https://www.what-to-watch.ru/hunger_games
@@ -612,7 +658,7 @@ components:
           uniqueItems: true
           example: [ Дженнифер Лоуренс, Джош Хатчерсон, Лиам Хемсворт ]
 
-        director:
+        producer:
           type: string
           minLength: 2
           maxLength: 50
@@ -631,13 +677,13 @@ components:
         user:
           $ref: '#/components/schemas/user'
 
-        posterPath:
+        posterLink:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
           example: hunger_games_poster.jpg
 
-        backgroundImagePath:
+        backgroundImageLink:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
@@ -650,19 +696,19 @@ components:
       required:
         - title
         - description
-        - publishingDate
+        - publicationDate
         - genre
         - releaseYear
         - rating
-        - previewPath
-        - filmPath
+        - previewLink
+        - link
         - actors
-        - director
+        - producer
         - durationInMinutes
         - commentsCount
         - user
-        - posterPath
-        - backgroundImagePath
+        - posterLink
+        - backgroundImageLink
         - backgroundColor
 
     updateFilm:
@@ -678,7 +724,7 @@ components:
             - filmId
 
 
-    filmListItem:
+    filmSearchItem:
       type: object
 
       properties:
@@ -688,7 +734,7 @@ components:
           maxLength: 100
           example: Голодные игры
 
-        publishingDate:
+        publicationDate:
           type: string
           format: date-time
           example: 2022-10-21T22:55:33.903Z
@@ -698,7 +744,7 @@ components:
           enum: [ comedy, crime, documentary, drama, horror, family, romance, scifi, thriller ]
           example: comedy
 
-        previewPath:
+        previewLink:
           type: string
           format: url
           example: https://www.what-to-watch.ru/hunger_games_preview
@@ -706,7 +752,7 @@ components:
         user:
           $ref: '#/components/schemas/user'
 
-        posterPath:
+        posterLink:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
@@ -719,11 +765,11 @@ components:
 
       required:
         - title
-        - publishingDate
+        - publicationDate
         - genre
-        - previewPath
+        - previewLink
         - user
-        - posterPath
+        - posterLink
         - commentsCount
 
 
@@ -743,15 +789,7 @@ components:
           maximum: 10
           example: 10
 
-        publishingDate:
-          type: string
-          format: date-time
-          example: 2022-10-21T22:55:33.903Z
-
-        user:
-          $ref: '#/components/schemas/user'
 
       required:
         - text
         - rating
-        - user

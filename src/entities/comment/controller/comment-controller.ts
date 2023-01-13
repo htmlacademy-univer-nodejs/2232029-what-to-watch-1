@@ -27,7 +27,7 @@ export default class CommentController extends Controller {
       handler: this.create,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateDtoMiddleware(CreateCommentDto)]
+        new ValidateDtoMiddleware(CreateCommentDto)],
     });
   }
 
@@ -40,8 +40,7 @@ export default class CommentController extends Controller {
       );
     }
 
-    const comment = await this.commentService.create({...body, userId: user.id});
-    await this.filmService.incCommentsCount(body.filmId);
+    const comment = await this.commentService.create({...body, user: user.id});
     this.created(res, fillDTO(CommentResponse, comment));
   }
 }

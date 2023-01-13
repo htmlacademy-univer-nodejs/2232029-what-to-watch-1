@@ -1,4 +1,4 @@
-import typegoose, {defaultClasses, getModelForClass, Ref } from '@typegoose/typegoose';
+import typegoose, {defaultClasses, getModelForClass, Ref, Severity} from '@typegoose/typegoose';
 import {Genre, GENRE_ARRAY} from '../../models/genre.js';
 import {UserEntity} from '../user/db-user.js';
 
@@ -10,6 +10,9 @@ export interface FilmEntity extends defaultClasses.Base { }
   schemaOptions: {
     collection: 'films'
   },
+  options: {
+    allowMixed: Severity.ALLOW
+  }
 })
 export class FilmEntity extends defaultClasses.TimeStamps {
   @prop({ trim: true, required: true, minlength: 2, maxlength: 100 })
@@ -31,7 +34,7 @@ export class FilmEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public releaseYear!: number;
 
-  @prop({ required: true })
+  @prop({ required: true, default: 0 })
   public rating!: number;
 
   @prop({ required: false, default: 0 })
@@ -55,7 +58,7 @@ export class FilmEntity extends defaultClasses.TimeStamps {
   @prop({
     ref: UserEntity
   })
-  public userId!: Ref<UserEntity>;
+  public user!: Ref<UserEntity>;
 
   @prop({ required: true })
   public posterLink!: string;
@@ -65,6 +68,9 @@ export class FilmEntity extends defaultClasses.TimeStamps {
 
   @prop({ required: true })
   public backgroundColor!: string;
+
+  @prop({ required: true, default: false })
+  public isPromo?: boolean;
 }
 
 export const FilmModel = getModelForClass(FilmEntity);

@@ -1,4 +1,4 @@
-import typegoose, {defaultClasses, getModelForClass } from '@typegoose/typegoose';
+import typegoose, {defaultClasses, getModelForClass, Severity} from '@typegoose/typegoose';
 import {checkPassword, createSHA256} from '../../utils/common.js';
 import {User} from './user.js';
 
@@ -10,6 +10,9 @@ export interface UserEntity extends defaultClasses.Base {}
   schemaOptions: {
     collection: 'users',
   },
+  options: {
+    allowMixed: Severity.ALLOW
+  }
 })
 export class UserEntity extends defaultClasses.TimeStamps implements User {
   constructor(data: User) {
@@ -20,12 +23,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
     this.avatar = data.avatar;
   }
 
-
-  @prop({
-    required: true,
-    minlength: [1, 'Min length for username is 1'],
-    maxlength: [15, 'Max length for username is 15']
-  })
+  @prop({required: true })
   public name!: string;
 
   @prop({ unique: true, required: true })
@@ -37,13 +35,12 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ required: true })
   private password!: string;
 
+  @prop({required: true, default: []})
+  public filmsToWatch!: string[];
+
   public setPassword(password: string, salt: string) {
     checkPassword(password);
     this.password = createSHA256(password, salt);
-  }
-
-  public getPassword() {
-    return this.password;
   }
 
   public verifyPassword(password: string, salt: string) {

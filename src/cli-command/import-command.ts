@@ -31,7 +31,7 @@ export default class ImportCommand implements ICliCommand {
 
     this.logger = new LoggerService();
     this.filmService = new FilmService(this.logger, FilmModel);
-    this.userService = new UserService(this.logger, UserModel);
+    this.userService = new UserService(this.logger, UserModel, FilmModel);
     this.databaseClient = new DatabaseClient(this.logger);
   }
 
@@ -42,9 +42,9 @@ export default class ImportCommand implements ICliCommand {
     }, this.salt);
     await this.filmService.create({
       ...film,
-      userId: user.id
+      user: user.id
     });
-    this.logger.info("save film: ", JSON.stringify(film));
+    this.logger.info('save film: ', JSON.stringify(film));
   }
 
   private async onLine(line: string, resolve: () => void) {

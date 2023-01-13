@@ -57,7 +57,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyIkX18iOnsiYWN0aXZlUGF0aHMiOnsicGF0a
   "actors": ["1", "2", "3"],
   "producer": "producer",
   "durationInMinutes": 130,
-  "userId": "6374d4c33d8026ef445dac97",
   "posterLink": "mdkskmkv",
   "backgroundImageLink": "dnvkkdafv",
   "backgroundColor": "ndnjvnkja"
@@ -84,7 +83,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyIkX18iOnsiYWN0aXZlUGF0aHMiOnsicGF0a
   "actors": ["1", "2", "3"],
   "producer": "producer",
   "durationInMinutes": 130,
-  "userId": "6374d4c33d8026ef445dac97",
   "posterLink": "mdkskmkv",
   "backgroundImageLink": "dnvkkdafv",
   "backgroundColor": "ndnjvnkja"

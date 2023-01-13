@@ -5,4 +5,5 @@ import {CommentEntity} from './db-comment.js';
 export interface ICommentService {
   findByFilmId(filmId: string): Promise<DocumentType<CommentEntity>[]>;
   create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>>;
+  deleteByFilmId(filmId: string): Promise<void | null>
 }

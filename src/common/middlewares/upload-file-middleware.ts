@@ -12,7 +12,6 @@ export class UploadFileMiddleware implements IMiddleware {
     const storage = diskStorage({
       destination: this.uploadDirectory,
       filename: (_req, file, callback) => {
-        console.log(file.mimetype)
         const ext = extension(file.mimetype);
         const filename = nanoid();
         callback(null, `${filename}.${ext}`);

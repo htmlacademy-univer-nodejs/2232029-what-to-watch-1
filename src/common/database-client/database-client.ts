@@ -11,7 +11,7 @@ export default class DatabaseClient implements IDatabase {
   ) {}
 
   public async connect(uri: string): Promise<void> {
-    this.logger.info(`Try to connect to MongoDB…`);
+    this.logger.info('Try to connect to MongoDB…');
     await mongoose.connect(uri);
     this.logger.info('Database connection established.');
   }
