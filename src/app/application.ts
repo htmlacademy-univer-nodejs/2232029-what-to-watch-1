@@ -9,6 +9,7 @@ import express, {Express} from 'express';
 import {IController} from '../common/controller/controller-interface.js';
 import {IExceptionFilter} from '../common/errors/exception-filter-interface.js';
 import {AuthenticateMiddleware} from '../common/middlewares/auth-middleware.js';
+import cors from 'cors';
 
 @injectable()
 export default class Application {
@@ -22,7 +23,7 @@ export default class Application {
     @inject(Component.IExceptionFilter) private exceptionFilter: IExceptionFilter,
     @inject(Component.UserController) private userController: IController,
     @inject(Component.CommentController) private commentController: IController,
-) {
+  ) {
     this.expressApp = express();
   }
 
@@ -38,6 +39,7 @@ export default class Application {
 
     const authenticateMiddleware = new AuthenticateMiddleware(this.config.get('JWT_SECRET'));
     this.expressApp.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
+    this.expressApp.use(cors());
   }
 
   public initExceptionFilters() {

@@ -7,11 +7,13 @@ import {ILogger} from '../../../common/logger/logger-interface.js';
 import {UserEntity} from '../db-user.js';
 import CreateUserDto from '../dto/create-user-dto.js';
 import LoginUserDto from '../dto/login-user-dto.js';
+import {FilmEntity} from '../../film/db-film.js';
 
 @injectable()
 export default class UserService implements IUserService {
   constructor(@inject(Component.ILogger) private logger: ILogger,
-    @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>) { }
+    @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>,
+    @inject(Component.FilmModel) private readonly filmModel: types.ModelType<FilmEntity>) { }
 
   async create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
     const user = new UserEntity(dto);
@@ -49,5 +51,26 @@ export default class UserService implements IUserService {
     }
 
     return null;
+  }
+
+  async findToWatch(userId: string): Promise<DocumentType<FilmEntity>[]> {
+    const filmsToWatch = await this.userModel.findById(userId).select('filmsToWatch');
+    return this.filmModel.find({_id: { $in: filmsToWatch?.filmsToWatch }}).populate('user');
+  }
+
+  async addToWatch(filmId: string, userId: string): Promise<void | null> {
+    return this.userModel.findByIdAndUpdate(userId, {
+      $addToSet: {filmsToWatch: filmId}
+    });
+  }
+
+  async deleteToWatch(filmId: string, userId: string): Promise<void | null> {
+    return this.userModel.findByIdAndUpdate(userId, {
+      $pull: {filmsToWatch: filmId}
+    });
+  }
+
+  async setUserAvatarPath(userId: string, avatarPath: string): Promise<void | null> {
+    return this.userModel.findByIdAndUpdate(userId, {avatarPath});
   }
 }
